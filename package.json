@@ -2,7 +2,7 @@
   "name": "arcade",
   "version": "1.0.0",
   "private": true,
-  "homepage": "mplightro.github.io/mx0x6D-arcade",
+  "homepage": "https://mplightro.github.io/m0x6D-arcade/",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

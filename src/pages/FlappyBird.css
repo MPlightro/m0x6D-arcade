@@ -1,0 +1,76 @@
+.fb-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.fb-topbar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.fb-back {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--pixel);
+  font-size: 9px;
+  padding: 8px 14px;
+  border-radius: 2px;
+  transition: border-color 0.15s, color 0.15s;
+  letter-spacing: 0.05em;
+}
+
+.fb-back:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.fb-game-label {
+  font-family: var(--pixel);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.fb-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+}
+
+/* ── Placeholder – remove when adding real game ── */
+.fb-canvas-area {
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 9 / 16;
+  max-height: 70vh;
+  border: 2px dashed var(--border);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: var(--surface);
+}
+
+.fb-placeholder-label {
+  font-family: var(--pixel);
+  font-size: 11px;
+  color: var(--accent);
+}
+
+.fb-placeholder-hint {
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+  max-width: 260px;
+  line-height: 1.6;
+}

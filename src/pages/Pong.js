@@ -143,13 +143,18 @@ export default function Pong({ navigate }) {
         return;
       }
 
-      // P1 input (W / S)
-      if (keys['KeyW'] || keys['ArrowUp'] && s.mode === '2p')    p1.y -= PAD_SPEED;
-      if (keys['KeyS'] || keys['ArrowDown'] && s.mode === '2p')  p1.y += PAD_SPEED;
+      // P1 input
       if (s.mode === '2p') {
+        if (keys['KeyW']) p1.y -= PAD_SPEED;
+        if (keys['KeyS']) p1.y += PAD_SPEED;
+
         if (keys['ArrowUp'])   p2.y -= PAD_SPEED;
         if (keys['ArrowDown']) p2.y += PAD_SPEED;
+      } else {
+        if (keys['KeyW'] || keys['ArrowUp'])   p1.y -= PAD_SPEED;
+        if (keys['KeyS'] || keys['ArrowDown']) p1.y += PAD_SPEED;
       }
+
       // clean up: 2p shares arrow keys so reset p1 arrow handling
       if (s.mode !== '2p') {
         if (keys['ArrowUp'])   p1.y -= PAD_SPEED;

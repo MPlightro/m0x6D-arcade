@@ -54,7 +54,7 @@ const GAMES = [
     id: 'gd-arrow',
     title: 'Geometry Arrow',
     description: 'Navigate the arrow through geometric mazes.',
-    icon: '🔤',
+    icon: '↗️',
     status: 'soon',
     accent: '#ffe047',
   },

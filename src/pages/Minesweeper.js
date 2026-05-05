@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./minesweeper.css";
+import "./Minesweeper.css";
 
 const SIZE = 10;
 const MINES = 15;

@@ -31,7 +31,7 @@ const GAMES = [
     title: 'Pong',
     description: 'The original. Two paddles. One ball.',
     icon: '🏓',
-    status: 'soon',
+    status: 'play',
     accent: '#47c8ff',
   },
   {

@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/m0x6D-arcade/static/css/main.f33ac52e.css",
+    "main.js": "/m0x6D-arcade/static/js/main.69d1848b.js",
+    "index.html": "/m0x6D-arcade/index.html",
+    "main.f33ac52e.css.map": "/m0x6D-arcade/static/css/main.f33ac52e.css.map",
+    "main.69d1848b.js.map": "/m0x6D-arcade/static/js/main.69d1848b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f33ac52e.css",
+    "static/js/main.69d1848b.js"
+  ]
+}

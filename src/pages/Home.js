@@ -15,7 +15,7 @@ const GAMES = [
     title: 'Snake',
     description: 'Eat, grow, survive.',
     icon: '🐍',
-    status: 'soon',
+    status: 'play',
     accent: '#47ffa0',
   },
   {

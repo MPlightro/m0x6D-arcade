@@ -1,0 +1,50 @@
+.minesweeper-container {
+  font-family: 'DM Sans', sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+.minesweeper-title {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 24px;
+}
+
+.minesweeper-button {
+  font-family: 'DM Sans', sans-serif;
+  margin-bottom: 20px;
+}
+
+.minesweeper-status {
+  font-family: 'Press Start 2P', cursive;
+}
+
+.minesweeper-board {
+  display: inline-block;
+  border: 2px solid #000;
+  background-color: #f0f0f0;
+}
+
+.minesweeper-row {
+  display: flex;
+}
+
+.minesweeper-cell {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ccc;
+  background-color: #ddd;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.minesweeper-cell.revealed {
+  background-color: #fff;
+}
+
+.minesweeper-cell:disabled {
+  cursor: not-allowed;
+}

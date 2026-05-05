@@ -1,0 +1,114 @@
+.ga-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+/* ── Topbar ── */
+.ga-topbar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.ga-back {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--pixel);
+  font-size: 9px;
+  padding: 8px 14px;
+  border-radius: 2px;
+  transition: border-color 0.15s, color 0.15s;
+  letter-spacing: 0.05em;
+}
+.ga-back:hover { border-color: #a78bfa; color: #a78bfa; }
+
+.ga-label {
+  font-family: var(--pixel);
+  font-size: 11px;
+  color: #a78bfa;
+  letter-spacing: 0.1em;
+}
+
+.ga-open-btn {
+  margin-left: auto;
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--pixel);
+  font-size: 8px;
+  padding: 8px 14px;
+  border-radius: 2px;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s;
+}
+.ga-open-btn:hover { border-color: #a78bfa; color: #a78bfa; }
+
+/* ── Frame ── */
+.ga-frame-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.ga-frame-wrap iframe {
+  width: 100%;
+  flex: 1;
+  border: none;
+  display: block;
+  min-height: calc(100vh - 65px);
+}
+
+/* ── Blocked fallback ── */
+.ga-blocked {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 60px 24px;
+  text-align: center;
+}
+
+.ga-blocked-icon {
+  font-size: 48px;
+}
+
+.ga-blocked-title {
+  font-family: var(--pixel);
+  font-size: 14px;
+  color: #ff6b47;
+  letter-spacing: 0.1em;
+}
+
+.ga-blocked-sub {
+  font-family: var(--body);
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+  max-width: 360px;
+}
+
+.ga-blocked-btn {
+  display: inline-block;
+  margin-top: 8px;
+  background: #a78bfa;
+  color: #0a0a0f;
+  border: none;
+  padding: 12px 24px;
+  font-family: var(--pixel);
+  font-size: 9px;
+  border-radius: 2px;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+  transition: opacity 0.1s;
+}
+.ga-blocked-btn:hover { opacity: 0.85; }

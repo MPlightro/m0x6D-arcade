@@ -140,42 +140,50 @@ const Minesweeper = () => {
   };
 
   return (
-    <div className="minesweeper">
-      <h1>Minesweeper</h1>
-      <button className="new-game-btn" onClick={initializeBoard}>
-        New Game
-      </button>
-      {gameOver && <p className="game-message">Game Over!</p>}
-      {win && <p className="game-message">You Win!</p>}
-      <div className="board">
-        {board.map((row, r) => (
-          <div className="row" key={r}>
-            {row.map((cell, c) => (
-              <button
-                key={c}
-                type="button"
-                className={`cell ${
-                  cell.isRevealed
+    <div className="minesweeper-page">
+      <header className="top-bar">
+        <div className="top-bar-brand">
+          <span className="top-tag">// ARCADE</span>
+          <h1 className="top-bar-title">MINESWEEPER</h1>
+        </div>
+        <button className="top-bar-btn" type="button" onClick={initializeBoard}>
+          NEW GAME
+        </button>
+      </header>
+
+      <main className="minesweeper">
+        {gameOver && <p className="game-message">Game Over!</p>}
+        {win && <p className="game-message">You Win!</p>}
+        <div className="board">
+          {board.map((row, r) => (
+            <div className="row" key={r}>
+              {row.map((cell, c) => (
+                <button
+                  key={c}
+                  type="button"
+                  className={`cell ${
+                    cell.isRevealed
+                      ? cell.isMine
+                        ? 'mine'
+                        : 'revealed'
+                      : 'hidden'
+                  }`}
+                  onClick={() => revealCell(r, c)}
+                  onContextMenu={(e) => toggleFlag(r, c, e)}
+                >
+                  {cell.isRevealed
                     ? cell.isMine
-                      ? 'mine'
-                      : 'revealed'
-                    : 'hidden'
-                }`}
-                onClick={() => revealCell(r, c)}
-                onContextMenu={(e) => toggleFlag(r, c, e)}
-              >
-                {cell.isRevealed
-                  ? cell.isMine
-                    ? '💣'
-                    : cell.neighborMines || ''
-                  : cell.isFlagged
-                  ? '🚩'
-                  : ''}
-              </button>
-            ))}
-          </div>
-        ))}
-      </div>
+                      ? '💣'
+                      : cell.neighborMines || ''
+                    : cell.isFlagged
+                    ? '🚩'
+                    : ''}
+                </button>
+              ))}
+            </div>
+          ))}
+        </div>
+      </main>
     </div>
   );
 };

@@ -1,0 +1,238 @@
+.ms-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  user-select: none;
+}
+
+/* ── Topbar ── */
+.ms-topbar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.ms-back {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--pixel);
+  font-size: 9px;
+  padding: 8px 14px;
+  border-radius: 2px;
+  transition: border-color 0.15s, color 0.15s;
+  letter-spacing: 0.05em;
+}
+.ms-back:hover { border-color: #ff6b47; color: #ff6b47; }
+
+.ms-game-label {
+  font-family: var(--pixel);
+  font-size: 11px;
+  color: #ff6b47;
+  letter-spacing: 0.1em;
+}
+
+.ms-difficulty {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.ms-diff-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--pixel);
+  font-size: 8px;
+  padding: 7px 12px;
+  border-radius: 2px;
+  letter-spacing: 0.06em;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.ms-diff-btn:hover   { border-color: #ff6b47; color: #ff6b47; }
+.ms-diff-btn.active  {
+  border-color: #ff6b47;
+  color: #ff6b47;
+  background: rgba(255,107,71,0.08);
+}
+
+/* ── HUD ── */
+.ms-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.ms-hud-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 8px 16px;
+  min-width: 100px;
+}
+
+.ms-hud-icon { font-size: 14px; }
+
+.ms-hud-val {
+  font-family: var(--pixel);
+  font-size: 16px;
+  color: #ff6b47;
+  letter-spacing: 0.1em;
+  min-width: 3ch;
+  text-align: right;
+}
+
+.ms-face {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  font-size: 22px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, background 0.1s;
+}
+.ms-face:hover  { border-color: #ff6b47; background: #1a1018; }
+.ms-face:active { background: #2a1a20; }
+
+/* ── Board scroll wrapper ── */
+.ms-scroll {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 24px;
+}
+
+/* ── Board grid ── */
+.ms-board {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 28px);
+  grid-template-rows:    repeat(var(--rows), 28px);
+  gap: 2px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px;
+  background: #0d0d14;
+}
+
+/* ── Cells ── */
+.ms-cell {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  font-family: var(--pixel);
+  font-size: 10px;
+  transition: background 0.06s;
+  position: relative;
+}
+
+.ms-hidden {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+.ms-hidden:hover { background: #1e1e2e; border-color: #444460; }
+.ms-hidden:active { background: #2a2a3a; }
+
+.ms-flagged { background: #1a0d10; border-color: #ff6b47; }
+
+.ms-revealed {
+  background: #0d0d14;
+  border: 1px solid #1a1a2a;
+  cursor: default;
+}
+
+.ms-mine-shown {
+  background: #1a0d0d;
+  border-color: #ff6b47;
+}
+
+.ms-detonated {
+  background: #ff6b47 !important;
+  border-color: #ff6b47 !important;
+}
+
+/* ── Cell contents ── */
+.ms-flag      { font-size: 13px; line-height: 1; }
+.ms-mine-icon { font-size: 14px; line-height: 1; }
+.ms-num       { font-weight: 700; line-height: 1; }
+
+/* ── Overlay ── */
+.ms-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,10,15,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.ms-overlay-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 40px 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  pointer-events: none;
+}
+
+.ms-overlay-title {
+  font-family: var(--pixel);
+  font-size: 22px;
+  letter-spacing: 0.1em;
+}
+.ms-win  { color: #47ffa0; }
+.ms-lose { color: #ff6b47; }
+
+.ms-overlay-sub {
+  font-family: var(--pixel);
+  font-size: 8px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+.ms-overlay-hint {
+  font-family: var(--pixel);
+  font-size: 7px;
+  color: #444460;
+  letter-spacing: 0.08em;
+  margin-top: 8px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .ms-hud { padding: 12px 16px; }
+  .ms-hud-display { min-width: 80px; padding: 6px 10px; }
+  .ms-hud-val { font-size: 13px; }
+  .ms-difficulty { gap: 6px; }
+  .ms-diff-btn { font-size: 7px; padding: 6px 8px; }
+  .ms-scroll { padding: 16px 8px; }
+  .ms-board {
+    grid-template-columns: repeat(var(--cols), 24px);
+    grid-template-rows:    repeat(var(--rows), 24px);
+  }
+  .ms-cell { width: 24px; height: 24px; font-size: 9px; }
+}

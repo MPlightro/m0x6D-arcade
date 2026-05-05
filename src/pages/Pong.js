@@ -8,15 +8,26 @@ const PAD_H = 70;
 const PAD_SPEED = 5.5;
 const BALL_SIZE = 8;
 const WIN_SCORE = 7;
-const CPU_REACT = 0.82; // 0–1, how closely CPU tracks ball
 
-function initState(mode = 'cpu') {
+const DIFFICULTIES = {
+  easy:   { label: 'EASY', react: 0.55 },
+  medium: { label: 'MEDIUM', react: 0.75 },
+  hard:   { label: 'HARD', react: 0.92 },
+  custom: { label: 'CUSTOM', react: 0.75 },
+};
+
+function initState(mode = 'cpu', difficulty = 'medium', customDifficulty = 75) {
   return {
-    status: 'idle',   // idle | playing | paused | dead
-    mode,             // 'cpu' | '2p'
+    status: 'idle',
+    mode,
+    difficulty,
+    customDifficulty,
+    cpuReact: difficulty === 'custom'
+      ? customDifficulty / 100
+      : DIFFICULTIES[difficulty].react,
     ball: { x: W / 2, y: H / 2, vx: 4 * (Math.random() > 0.5 ? 1 : -1), vy: 3 * (Math.random() > 0.5 ? 1 : -1) },
-    p1: { y: H / 2 - PAD_H / 2, score: 0 },  // left  – W/S
-    p2: { y: H / 2 - PAD_H / 2, score: 0 },  // right – ↑/↓  or CPU
+    p1: { y: H / 2 - PAD_H / 2, score: 0 },
+    p2: { y: H / 2 - PAD_H / 2, score: 0 },
     keys: {},
     particles: [],
     serving: true,
@@ -35,28 +46,67 @@ function resetBall(toRight = true) {
 }
 
 export default function Pong({ navigate }) {
-  const canvasRef  = useRef(null);
-  const stateRef   = useRef(initState('cpu'));
-  const rafRef     = useRef(null);
-  const modeRef    = useRef('cpu');
+  const canvasRef = useRef(null);
+  const stateRef = useRef(initState('cpu'));
+  const rafRef = useRef(null);
+  const modeRef = useRef('cpu');
+  const diffMenuRef = useRef(null);
 
   const [modeUI, setModeUI] = React.useState('cpu');
+  const [difficultyUI, setDifficultyUI] = React.useState('medium');
+  const [customDifficultyUI, setCustomDifficultyUI] = React.useState(75);
+  const [difficultyMenuOpen, setDifficultyMenuOpen] = React.useState(false);
 
-  // ── Mode toggle (only when not mid-game) ────────────────────
-  const toggleMode = useCallback(() => {
+  const setDifficulty = useCallback((difficulty, percent = 75) => {
+    const cpuReact = difficulty === 'custom'
+      ? Math.min(0.99, Math.max(0.1, percent / 100))
+      : DIFFICULTIES[difficulty].react;
+
     const s = stateRef.current;
+    s.difficulty = difficulty;
+    s.customDifficulty = percent;
+    s.cpuReact = cpuReact;
+
+    setDifficultyUI(difficulty);
+    setCustomDifficultyUI(percent);
+    setDifficultyMenuOpen(false);
+  }, []);
+
+  const selectDifficulty = useCallback((option) => {
+    if (option === 'custom') {
+      const input = window.prompt('Enter CPU difficulty percent (10-99)', String(customDifficultyUI));
+      const value = Number(input);
+      if (!Number.isFinite(value) || value < 10 || value > 99) return;
+      setDifficulty('custom', value);
+    } else {
+      setDifficulty(option);
+    }
+  }, [customDifficultyUI, setDifficulty]);
+
+  useEffect(() => {
+    if (!difficultyMenuOpen) return;
+    const onWindowClick = (e) => {
+      if (!diffMenuRef.current?.contains(e.target)) setDifficultyMenuOpen(false);
+    };
+    window.addEventListener('mousedown', onWindowClick);
+    return () => window.removeEventListener('mousedown', onWindowClick);
+  }, [difficultyMenuOpen]);
+
+  const toggleMode = useCallback(() => {
     const next = modeRef.current === 'cpu' ? '2p' : 'cpu';
     modeRef.current = next;
     setModeUI(next);
-    stateRef.current = initState(next);
-  }, []);
+    stateRef.current = initState(next, difficultyUI, customDifficultyUI);
+  }, [difficultyUI, customDifficultyUI]);
 
-  // ── Start / pause ────────────────────────────────────────────
   const startOrResume = useCallback(() => {
     const s = stateRef.current;
-    if (s.status === 'dead') { stateRef.current = initState(modeRef.current); return; }
+    if (s.status === 'dead') {
+      stateRef.current = initState(modeRef.current, difficultyUI, customDifficultyUI);
+      return;
+    }
     if (s.status === 'idle' || s.status === 'paused') s.status = 'playing';
-  }, []);
+  }, [difficultyUI, customDifficultyUI]);
 
   // ── Keys ─────────────────────────────────────────────────────
   useEffect(() => {
@@ -113,7 +163,7 @@ export default function Pong({ navigate }) {
       if (s.mode === 'cpu') {
         const target = ball.y - PAD_H / 2;
         const diff = target - p2.y;
-        p2.y += Math.sign(diff) * Math.min(Math.abs(diff), PAD_SPEED * CPU_REACT);
+        p2.y += Math.sign(diff) * Math.min(Math.abs(diff), PAD_SPEED * s.cpuReact);
         p2.y = Math.max(0, Math.min(H - PAD_H, p2.y));
       }
 
@@ -380,6 +430,48 @@ export default function Pong({ navigate }) {
       <div className="pong-topbar">
         <button className="pong-back" onClick={() => navigate('home')}>← BACK</button>
         <span className="pong-game-label">PONG</span>
+
+        <div className="pong-difficulty" ref={diffMenuRef}>
+          <button
+            className="pong-difficulty-btn"
+            onClick={() => setDifficultyMenuOpen((open) => !open)}
+            title="CPU difficulty"
+          >
+            {difficultyUI === 'custom'
+              ? `CUSTOM ${customDifficultyUI}%`
+              : DIFFICULTIES[difficultyUI].label}
+          </button>
+
+          {difficultyMenuOpen && (
+            <div className="pong-difficulty-menu">
+              <button
+                className={`pong-difficulty-option ${difficultyUI === 'easy' ? 'active' : ''}`}
+                onClick={() => selectDifficulty('easy')}
+              >
+                EASY
+              </button>
+              <button
+                className={`pong-difficulty-option ${difficultyUI === 'medium' ? 'active' : ''}`}
+                onClick={() => selectDifficulty('medium')}
+              >
+                MEDIUM
+              </button>
+              <button
+                className={`pong-difficulty-option ${difficultyUI === 'hard' ? 'active' : ''}`}
+                onClick={() => selectDifficulty('hard')}
+              >
+                HARD
+              </button>
+              <button
+                className={`pong-difficulty-option ${difficultyUI === 'custom' ? 'active custom' : ''}`}
+                onClick={() => selectDifficulty('custom')}
+              >
+                CUSTOM {customDifficultyUI}%
+              </button>
+            </div>
+          )}
+        </div>
+
         <button
           className={`pong-mode-toggle ${modeUI === '2p' ? 'pong-mode-2p' : ''}`}
           onClick={toggleMode}

@@ -20,7 +20,7 @@ function randomCell(snake) {
   return pos;
 }
 
-function initState(best = 0) {
+function initState(best = 0, wallMode = false) {
   const snake = [[10, 10], [9, 10], [8, 10]];
   return {
     status: 'idle',   // idle | playing | dead
@@ -32,6 +32,7 @@ function initState(best = 0) {
     best,
     tick: TICK_START,
     lastTick: 0,
+    wallMode,         // true = hitting wall is lethal
   };
 }
 
@@ -39,12 +40,28 @@ export default function Snake({ navigate }) {
   const canvasRef = useRef(null);
   const stateRef  = useRef(initState());
   const rafRef    = useRef(null);
+  const wallModeRef = useRef(false);  // survives resets
+
+  const [wallMode, setWallModeUI] = React.useState(false);
+
+  const toggleWall = useCallback(() => {
+    const next = !wallModeRef.current;
+    wallModeRef.current = next;
+    setWallModeUI(next);
+    // apply immediately to current state (only safe when idle/dead)
+    const s = stateRef.current;
+    if (s.status !== 'playing') {
+      stateRef.current = initState(s.best, next);
+    } else {
+      s.wallMode = next; // apply mid-game too
+    }
+  }, []);
 
   // ── Input ────────────────────────────────────────────────────
   const handleDir = useCallback((nd) => {
     const s = stateRef.current;
     if (s.status === 'dead') {
-      stateRef.current = initState(s.best);
+      stateRef.current = initState(s.best, wallModeRef.current);
       return;
     }
     if (s.status === 'idle') {
@@ -69,13 +86,14 @@ export default function Snake({ navigate }) {
       if (e.code === 'Space' || e.code === 'Enter') {
         e.preventDefault();
         const s = stateRef.current;
-        if (s.status === 'dead') { stateRef.current = initState(s.best); }
+        if (s.status === 'dead') { stateRef.current = initState(s.best, wallModeRef.current); }
         else if (s.status === 'idle') { s.status = 'playing'; s.lastTick = performance.now(); }
       }
+      if (e.code === 'KeyF') { e.preventDefault(); toggleWall(); }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [handleDir]);
+  }, [handleDir, toggleWall]);
 
   // ── Render loop ──────────────────────────────────────────────
   useEffect(() => {
@@ -83,7 +101,7 @@ export default function Snake({ navigate }) {
     const ctx    = canvas.getContext('2d');
 
     // ─ draw helpers ─
-    function drawGrid() {
+    function drawGrid(wallMode) {
       ctx.fillStyle = '#0d0d14';
       ctx.fillRect(0, 0, W, H);
       ctx.strokeStyle = '#1a1a2a';
@@ -93,6 +111,12 @@ export default function Snake({ navigate }) {
       }
       for (let y = 0; y <= ROWS; y++) {
         ctx.beginPath(); ctx.moveTo(0, y * CELL); ctx.lineTo(W, y * CELL); ctx.stroke();
+      }
+      // wall border highlight when lethal
+      if (wallMode) {
+        ctx.strokeStyle = '#ff6b47';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(1, 1, W - 2, H - 2);
       }
     }
 
@@ -143,7 +167,7 @@ export default function Snake({ navigate }) {
       ctx.restore();
     }
 
-    function drawHUD(score, best) {
+    function drawHUD(score, best, wallMode) {
       ctx.font = '700 11px "Press Start 2P", monospace';
       ctx.textAlign = 'left';
       ctx.fillStyle = '#e8ff47';
@@ -153,14 +177,21 @@ export default function Snake({ navigate }) {
       ctx.fillText(`BEST ${best}`, W - 8 - ctx.measureText(`BEST ${best}`).width, 20);
       ctx.fillStyle = '#444460';
       ctx.fillText(`BEST ${best}`, W - 9 - ctx.measureText(`BEST ${best}`).width, 19);
+      // wall mode indicator
+      if (wallMode) {
+        ctx.font = '400 6px "Press Start 2P", monospace';
+        ctx.fillStyle = '#ff6b47';
+        ctx.textAlign = 'center';
+        ctx.fillText('WALLS ON', W / 2, 14);
+      }
     }
 
-    function drawIdleOverlay() {
+    function drawIdleOverlay(wallMode) {
       ctx.fillStyle = 'rgba(10,10,15,0.8)';
-      ctx.fillRect(W / 2 - 140, H / 2 - 70, 280, 130);
+      ctx.fillRect(W / 2 - 140, H / 2 - 70, 280, 140);
       ctx.strokeStyle = '#47ffa0';
       ctx.lineWidth = 1;
-      ctx.strokeRect(W / 2 - 140, H / 2 - 70, 280, 130);
+      ctx.strokeRect(W / 2 - 140, H / 2 - 70, 280, 140);
 
       ctx.font = '700 13px "Press Start 2P", monospace';
       ctx.textAlign = 'center';
@@ -171,7 +202,11 @@ export default function Snake({ navigate }) {
       ctx.fillStyle = '#666680';
       ctx.fillText('ARROWS / WASD TO MOVE', W / 2, H / 2 + 8);
       ctx.fillText('SPACE / ENTER TO START', W / 2, H / 2 + 28);
-      ctx.fillText('EAT APPLES. DONT HIT YOURSELF.', W / 2, H / 2 + 50);
+      ctx.fillText('EAT APPLES. DONT HIT YOURSELF.', W / 2, H / 2 + 48);
+
+      // wall mode status
+      ctx.fillStyle = wallMode ? '#ff6b47' : '#47ffa0';
+      ctx.fillText(`WALLS: ${wallMode ? 'ON  (LETHAL)' : 'OFF (WRAP)'}`, W / 2, H / 2 + 68);
     }
 
     function drawDeadOverlay(score, best) {
@@ -217,13 +252,28 @@ export default function Snake({ navigate }) {
         s.dir = s.nextDir;
 
         const head = s.snake[0];
-        const newHead = [
-          (head[0] + s.dir[0] + COLS) % COLS,
-          (head[1] + s.dir[1] + ROWS) % ROWS,
-        ];
+        const nx = head[0] + s.dir[0];
+        const ny = head[1] + s.dir[1];
+
+        // wall collision or wrap
+        let dead = false;
+        let newHead;
+        if (s.wallMode) {
+          if (nx < 0 || nx >= COLS || ny < 0 || ny >= ROWS) {
+            dead = true;
+          } else {
+            newHead = [nx, ny];
+          }
+        } else {
+          newHead = [(nx + COLS) % COLS, (ny + ROWS) % ROWS];
+        }
 
         // self-collision
-        if (s.snake.some(([x, y]) => x === newHead[0] && y === newHead[1])) {
+        if (!dead && s.snake.some(([x, y]) => x === newHead[0] && y === newHead[1])) {
+          dead = true;
+        }
+
+        if (dead) {
           s.status = 'dead';
           s.best = Math.max(s.best, s.score);
         } else {
@@ -239,11 +289,11 @@ export default function Snake({ navigate }) {
       }
 
       // ─ render ─
-      drawGrid();
+      drawGrid(s.wallMode);
       if (s.status !== 'dead') drawApple(s.apple, frame);
       drawSnake(s.snake);
-      drawHUD(s.score, s.best);
-      if (s.status === 'idle') drawIdleOverlay();
+      drawHUD(s.score, s.best, s.wallMode);
+      if (s.status === 'idle') drawIdleOverlay(s.wallMode);
       if (s.status === 'dead') drawDeadOverlay(s.score, s.best);
     }
 
@@ -281,6 +331,13 @@ export default function Snake({ navigate }) {
       <div className="sn-topbar">
         <button className="sn-back" onClick={() => navigate('home')}>← BACK</button>
         <span className="sn-game-label">SNAKE</span>
+        <button
+          className={`sn-wall-toggle ${wallMode ? 'sn-wall-on' : ''}`}
+          onClick={toggleWall}
+          title="Toggle wall collision (F)"
+        >
+          WALLS: {wallMode ? 'ON' : 'OFF'}
+        </button>
         <span className="sn-controls-hint">ARROWS / WASD</span>
       </div>
 

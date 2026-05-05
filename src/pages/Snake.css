@@ -37,6 +37,30 @@
   letter-spacing: 0.1em;
 }
 
+.sn-wall-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--pixel);
+  font-size: 8px;
+  padding: 7px 12px;
+  border-radius: 2px;
+  letter-spacing: 0.06em;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.sn-wall-toggle:hover {
+  border-color: #ff6b47;
+  color: #ff6b47;
+}
+
+.sn-wall-toggle.sn-wall-on {
+  border-color: #ff6b47;
+  color: #ff6b47;
+  background: rgba(255, 107, 71, 0.08);
+}
+
+
 .sn-controls-hint {
   font-family: var(--pixel);
   font-size: 8px;

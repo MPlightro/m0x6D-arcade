@@ -281,19 +281,19 @@
 .wd-key-wide    { min-width: 58px; font-size: 7px; }
 
 .wd-key.wd-key-correct {
-  background: #0d2e1e;
-  border-color: #47ffa0;
-  color: #47ffa0;
+  background: #0d2e1e !important;
+  border-color: #47ffa0 !important;
+  color: #47ffa0 !important;
 }
 .wd-key.wd-key-present {
-  background: #2a200a;
-  border-color: #ffe047;
-  color: #ffe047;
+  background: #2a200a !important;
+  border-color: #ffe047 !important;
+  color: #ffe047 !important;
 }
 .wd-key.wd-key-absent {
-  background: #111118;
-  border-color: #2a2a3a;
-  color: #444460;
+  background: #111118 !important;
+  border-color: #2a2a3a !important;
+  color: #444460 !important;
 }
 
 /* ── Responsive ── */

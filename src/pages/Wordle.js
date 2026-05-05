@@ -345,7 +345,7 @@ export default function Wordle({ navigate }) {
               return (
                 <button
                   key={key}
-                  className={`wd-key wd-key-${state} ${wide ? 'wd-key-wide' : ''}`}
+                  className={`wd-key${state ? ` wd-key-${state}` : ''} ${wide ? 'wd-key-wide' : ''}`}
                   onClick={() => key === 'ENTER' ? submitGuess() : type(key)}
                 >
                   {key}

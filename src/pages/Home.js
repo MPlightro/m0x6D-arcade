@@ -50,6 +50,14 @@ const GAMES = [
     status: 'soon',
     accent: '#ffe047',
   },
+    {
+    id: 'gd-arrow',
+    title: 'Geometry Arrow',
+    description: 'Navigate the arrow through geometric mazes.',
+    icon: '🔤',
+    status: 'soon',
+    accent: '#ffe047',
+  },
 ];
 
 export default function Home({ navigate }) {

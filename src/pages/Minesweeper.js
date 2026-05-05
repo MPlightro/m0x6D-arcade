@@ -3,128 +3,112 @@ import './Minesweeper.css';
 
 const ROWS = 10;
 const COLS = 10;
-const MINES = 10;
+const MINES = 15;
 
 const Minesweeper = () => {
   const [board, setBoard] = useState([]);
-  const [revealed, setRevealed] = useState(new Set());
-  const [flagged, setFlagged] = useState(new Set());
   const [gameOver, setGameOver] = useState(false);
-  const [won, setWon] = useState(false);
+  const [win, setWin] = useState(false);
 
   useEffect(() => {
     initializeBoard();
   }, []);
 
   const initializeBoard = () => {
-    const newBoard = Array(ROWS).fill().map(() => Array(COLS).fill(0));
+    const newBoard = Array(ROWS).fill().map(() => Array(COLS).fill({ isMine: false, isRevealed: false, isFlagged: false, neighborMines: 0 }));
+    // Place mines randomly
     let minesPlaced = 0;
     while (minesPlaced < MINES) {
-      const r = Math.floor(Math.random() * ROWS);
-      const c = Math.floor(Math.random() * COLS);
-      if (newBoard[r][c] !== -1) {
-        newBoard[r][c] = -1;
+      const row = Math.floor(Math.random() * ROWS);
+      const col = Math.floor(Math.random() * COLS);
+      if (!newBoard[row][col].isMine) {
+        newBoard[row][col].isMine = true;
         minesPlaced++;
-        // Increment neighbors
-        for (let i = -1; i <= 1; i++) {
-          for (let j = -1; j <= 1; j++) {
-            const nr = r + i, nc = c + j;
-            if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS && newBoard[nr][nc] !== -1) {
-              newBoard[nr][nc]++;
+      }
+    }
+    // Calculate neighbor mines
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        if (!newBoard[r][c].isMine) {
+          let count = 0;
+          for (let dr = -1; dr <= 1; dr++) {
+            for (let dc = -1; dc <= 1; dc++) {
+              const nr = r + dr, nc = c + dc;
+              if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS && newBoard[nr][nc].isMine) count++;
             }
+          }
+          newBoard[r][c].neighborMines = count;
+        }
+      }
+    }
+    setBoard(newBoard);
+    setGameOver(false);
+    setWin(false);
+  };
+
+  const revealCell = (r, c) => {
+    if (gameOver || board[r][c].isRevealed || board[r][c].isFlagged) return;
+    const newBoard = [...board];
+    newBoard[r][c].isRevealed = true;
+    if (newBoard[r][c].isMine) {
+      setGameOver(true);
+      // Reveal all mines
+      for (let i = 0; i < ROWS; i++) {
+        for (let j = 0; j < COLS; j++) {
+          if (newBoard[i][j].isMine) newBoard[i][j].isRevealed = true;
+        }
+      }
+    } else if (newBoard[r][c].neighborMines === 0) {
+      // Reveal neighbors recursively
+      for (let dr = -1; dr <= 1; dr++) {
+        for (let dc = -1; dc <= 1; dc++) {
+          const nr = r + dr, nc = c + dc;
+          if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS && !newBoard[nr][nc].isRevealed) {
+            revealCell(nr, nc);
           }
         }
       }
     }
     setBoard(newBoard);
-    setRevealed(new Set());
-    setFlagged(new Set());
-    setGameOver(false);
-    setWon(false);
+    checkWin(newBoard);
   };
 
-  const revealCell = (r, c) => {
-    if (gameOver || revealed.has(`${r}-${c}`) || flagged.has(`${r}-${c}`)) return;
-    const newRevealed = new Set(revealed);
-    newRevealed.add(`${r}-${c}`);
-    if (board[r][c] === -1) {
-      setGameOver(true);
-      // Reveal all mines
-      for (let i = 0; i < ROWS; i++) {
-        for (let j = 0; j < COLS; j++) {
-          if (board[i][j] === -1) newRevealed.add(`${i}-${j}`);
-        }
-      }
-    } else if (board[r][c] === 0) {
-      // Flood fill
-      const stack = [[r, c]];
-      while (stack.length) {
-        const [cr, cc] = stack.pop();
-        for (let i = -1; i <= 1; i++) {
-          for (let j = -1; j <= 1; j++) {
-            const nr = cr + i, nc = cc + j;
-            if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS && !newRevealed.has(`${nr}-${nc}`) && !flagged.has(`${nr}-${nc}`)) {
-              newRevealed.add(`${nr}-${nc}`);
-              if (board[nr][nc] === 0) stack.push([nr, nc]);
-            }
-          }
-        }
-      }
-    }
-    setRevealed(newRevealed);
-    checkWin(newRevealed);
-  };
-
-  const toggleFlag = (e, r, c) => {
+  const toggleFlag = (r, c, e) => {
     e.preventDefault();
-    if (gameOver || revealed.has(`${r}-${c}`)) return;
-    const newFlagged = new Set(flagged);
-    if (newFlagged.has(`${r}-${c}`)) {
-      newFlagged.delete(`${r}-${c}`);
-    } else {
-      newFlagged.add(`${r}-${c}`);
-    }
-    setFlagged(newFlagged);
+    if (gameOver || board[r][c].isRevealed) return;
+    const newBoard = [...board];
+    newBoard[r][c].isFlagged = !newBoard[r][c].isFlagged;
+    setBoard(newBoard);
   };
 
-  const checkWin = (newRevealed) => {
-    let revealedCount = 0;
-    for (let i = 0; i < ROWS; i++) {
-      for (let j = 0; j < COLS; j++) {
-        if (newRevealed.has(`${i}-${j}`)) revealedCount++;
+  const checkWin = (board) => {
+    let revealedCells = 0;
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        if (board[r][c].isRevealed) revealedCells++;
       }
     }
-    if (revealedCount === ROWS * COLS - MINES) {
-      setWon(true);
-      setGameOver(true);
-    }
-  };
-
-  const getCellDisplay = (r, c) => {
-    if (flagged.has(`${r}-${c}`)) return '🚩';
-    if (!revealed.has(`${r}-${c}`)) return '';
-    if (board[r][c] === -1) return '💣';
-    if (board[r][c] === 0) return '';
-    return board[r][c];
+    if (revealedCells === ROWS * COLS - MINES) setWin(true);
   };
 
   return (
-    <div className="minesweeper-container">
-      <h1 className="minesweeper-title">Minesweeper</h1>
-      <button onClick={initializeBoard} className="minesweeper-button">New Game</button>
-      {gameOver && <p className="minesweeper-status">{won ? 'You Win!' : 'Game Over'}</p>}
-      <div className="minesweeper-board">
+    <div className="minesweeper">
+      <h1>Minesweeper</h1>
+      <button className="new-game-btn" onClick={initializeBoard}>New Game</button>
+      {gameOver && <p className="game-message">Game Over!</p>}
+      {win && <p className="game-message">You Win!</p>}
+      <div className="board">
         {board.map((row, r) => (
-          <div key={r} className="minesweeper-row">
+          <div key={r} className="row">
             {row.map((cell, c) => (
               <button
                 key={c}
+                className={`cell ${cell.isRevealed ? (cell.isMine ? 'mine' : 'revealed') : 'hidden'}`}
                 onClick={() => revealCell(r, c)}
-                onContextMenu={(e) => toggleFlag(e, r, c)}
-                className={`minesweeper-cell ${revealed.has(`${r}-${c}`) ? 'revealed' : ''}`}
-                disabled={gameOver}
+                onContextMenu={(e) => toggleFlag(r, c, e)}
+                disabled={cell.isRevealed}
               >
-                {getCellDisplay(r, c)}
+                {cell.isRevealed ? (cell.isMine ? '💣' : cell.neighborMines || '') : (cell.isFlagged ? '🚩' : '')}
               </button>
             ))}
           </div>

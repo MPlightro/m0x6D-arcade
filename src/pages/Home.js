@@ -39,7 +39,7 @@ const GAMES = [
     title: 'Minesweeper',
     description: 'Find the mines. Or don\'t.',
     icon: '💣',
-    status: 'soon',
+    status: 'play',
     accent: '#ff6b47',
   },
   {

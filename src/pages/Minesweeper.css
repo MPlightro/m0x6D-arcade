@@ -1,50 +1,71 @@
-.minesweeper-container {
-  font-family: 'DM Sans', sans-serif;
+.minesweeper {
+  font-family: 'Press Start 2P', cursive;
   text-align: center;
   padding: 20px;
+  color: #fff;
+  background: #000;
+  min-height: 100vh;
 }
 
-.minesweeper-title {
-  font-family: 'Press Start 2P', cursive;
+.minesweeper h1 {
   font-size: 24px;
-}
-
-.minesweeper-button {
-  font-family: 'DM Sans', sans-serif;
   margin-bottom: 20px;
 }
 
-.minesweeper-status {
-  font-family: 'Press Start 2P', cursive;
+.new-game-btn {
+  font-family: inherit;
+  font-size: 12px;
+  padding: 10px 20px;
+  background: #47c8ff;
+  border: 2px solid #fff;
+  color: #000;
+  cursor: pointer;
+  margin-bottom: 20px;
 }
 
-.minesweeper-board {
+.new-game-btn:hover {
+  background: #fff;
+  color: #47c8ff;
+}
+
+.game-message {
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+.board {
   display: inline-block;
-  border: 2px solid #000;
-  background-color: #f0f0f0;
+  border: 4px solid #fff;
+  background: #ccc;
+  padding: 10px;
 }
 
-.minesweeper-row {
+.row {
   display: flex;
 }
 
-.minesweeper-cell {
+.cell {
   width: 30px;
   height: 30px;
-  border: 1px solid #ccc;
-  background-color: #ddd;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
+  border: 1px solid #000;
+  font-family: inherit;
+  font-size: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.minesweeper-cell.revealed {
-  background-color: #fff;
+.cell.hidden {
+  background: #aaa;
 }
 
-.minesweeper-cell:disabled {
-  cursor: not-allowed;
+.cell.revealed {
+  background: #fff;
+  color: #000;
+}
+
+.cell.mine {
+  background: #f00;
+  color: #fff;
 }

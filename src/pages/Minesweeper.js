@@ -37,7 +37,7 @@ const countNeighbors = (board, r, c) => {
   return count;
 };
 
-const Minesweeper = () => {
+export default function Minesweeper({ navigate }) {
   const [board, setBoard] = useState(createEmptyBoard());
   const [gameOver, setGameOver] = useState(false);
   const [win, setWin] = useState(false);
@@ -141,15 +141,13 @@ const Minesweeper = () => {
 
   return (
     <div className="minesweeper-page">
-      <header className="top-bar">
-        <div className="top-bar-brand">
-          <span className="top-tag">// ARCADE</span>
-          <h1 className="top-bar-title">MINESWEEPER</h1>
-        </div>
-        <button className="top-bar-btn" type="button" onClick={initializeBoard}>
-          NEW GAME
+      <div className="ms-topbar">
+        <button className="ms-back" type="button" onClick={() => navigate('home')}>
+          ← BACK
         </button>
-      </header>
+        <span className="ms-game-label">MINESWEEPER</span>
+        <span className="ms-controls-hint">CLICK / RIGHT CLICK</span>
+      </div>
 
       <main className="minesweeper">
         {gameOver && <p className="game-message">Game Over!</p>}
@@ -186,6 +184,4 @@ const Minesweeper = () => {
       </main>
     </div>
   );
-};
-
-export default Minesweeper;
+}

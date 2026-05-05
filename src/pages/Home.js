@@ -23,7 +23,7 @@ const GAMES = [
     title: 'Tetris',
     description: 'Stack blocks, clear lines.',
     icon: '🧩',
-    status: 'soon',
+    status: 'play',
     accent: '#ff47e8',
   },
   {

@@ -1,0 +1,200 @@
+.tet-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+/* ── Topbar ── */
+.tet-topbar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.tet-back {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--pixel);
+  font-size: 9px;
+  padding: 8px 14px;
+  border-radius: 2px;
+  transition: border-color 0.15s, color 0.15s;
+  letter-spacing: 0.05em;
+}
+.tet-back:hover {
+  border-color: #ff47e8;
+  color: #ff47e8;
+}
+
+.tet-game-label {
+  font-family: var(--pixel);
+  font-size: 11px;
+  color: #ff47e8;
+  letter-spacing: 0.1em;
+}
+
+.tet-controls-hint {
+  font-family: var(--pixel);
+  font-size: 8px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  margin-left: auto;
+}
+
+/* ── Main layout ── */
+.tet-layout {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 16px;
+  padding: 32px 24px;
+}
+
+/* ── Side panels ── */
+.tet-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 120px;
+  flex-shrink: 0;
+}
+
+.tet-panel-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tet-label {
+  font-family: var(--pixel);
+  font-size: 8px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+
+.tet-mini-canvas {
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  image-rendering: pixelated;
+  display: block;
+}
+
+/* ── Stats (right of board on desktop, below on mobile) ── */
+.tet-stats-overlay {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 16px;
+}
+
+.tet-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tet-stat-label {
+  font-family: var(--pixel);
+  font-size: 7px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+
+.tet-stat-val {
+  font-family: var(--pixel);
+  font-size: 14px;
+  color: var(--text);
+  letter-spacing: 0.05em;
+}
+
+/* ── Board ── */
+.tet-board-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tet-canvas {
+  display: block;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  image-rendering: pixelated;
+  outline: none;
+  max-height: 75vh;
+  width: auto;
+}
+.tet-canvas:focus-visible {
+  border-color: #ff47e8;
+}
+
+/* ── Mobile controls ── */
+.tet-mobile-controls {
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  padding: 16px 24px 32px;
+}
+
+.tet-mobile-row {
+  display: flex;
+  gap: 8px;
+}
+
+.tet-btn {
+  width: 56px;
+  height: 56px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: var(--pixel);
+  font-size: 14px;
+  border-radius: 2px;
+  transition: border-color 0.1s, color 0.1s, background 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+  user-select: none;
+}
+.tet-btn:active {
+  border-color: #ff47e8;
+  color: #ff47e8;
+  background: #1a0d1a;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .tet-layout {
+    padding: 16px 12px;
+    gap: 10px;
+  }
+
+  .tet-panel {
+    width: 80px;
+  }
+
+  .tet-panel-right .tet-stats-overlay {
+    display: none;
+  }
+
+  .tet-mobile-controls {
+    display: flex;
+  }
+
+  .tet-controls-hint {
+    display: none;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tet-mobile-controls {
+    display: none !important;
+  }
+}

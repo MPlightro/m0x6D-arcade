@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Home from './pages/Home';
 import FlappyBird from './pages/FlappyBird';
 import Snake from './pages/Snake';
+import Tetris from './pages/Tetris';
 import './App.css';
 
 function getPage() {
@@ -27,6 +28,7 @@ export default function App() {
       {page === 'home'        && <Home       navigate={navigate} />}
       {page === 'flappy-bird' && <FlappyBird navigate={navigate} />}
       {page === 'snake'       && <Snake      navigate={navigate} />}
+      {page === 'tetris'      && <Tetris     navigate={navigate} />}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './GeometryArrow.css';
+import './gd-arrow.css';
 
 const GAME_URL =
   'https://html5.gamedistribution.com/rvvASMiM/9ee26ba4405c456094c70af7dc31a524/index.html' +

@@ -3,6 +3,7 @@ import Home from './pages/Home';
 import FlappyBird from './pages/FlappyBird';
 import Snake from './pages/Snake';
 import Tetris from './pages/Tetris';
+import Pong from './pages/Pong';
 import './App.css';
 
 function getPage() {
@@ -29,6 +30,7 @@ export default function App() {
       {page === 'flappy-bird' && <FlappyBird navigate={navigate} />}
       {page === 'snake'       && <Snake      navigate={navigate} />}
       {page === 'tetris'      && <Tetris     navigate={navigate} />}
+      {page === 'pong'        && <Pong       navigate={navigate} />}
     </div>
   );
 }

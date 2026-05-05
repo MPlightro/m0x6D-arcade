@@ -47,7 +47,7 @@ const GAMES = [
     title: 'Word Game',
     description: 'Guess the word in 6 tries.',
     icon: '🔤',
-    status: 'soon',
+    status: 'play',
     accent: '#ffe047',
   },
     {

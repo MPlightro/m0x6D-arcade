@@ -5,6 +5,7 @@ import Snake from './pages/Snake';
 import Tetris from './pages/Tetris';
 import Pong from './pages/Pong';
 import Minesweeper from './pages/Minesweeper';
+import Wordle from './pages/Wordle';
 import './App.css';
 
 function getPage() {
@@ -33,6 +34,7 @@ export default function App() {
       {page === 'tetris'      && <Tetris     navigate={navigate} />}
       {page === 'pong'        && <Pong       navigate={navigate} />}
       {page === 'minesweeper' && <Minesweeper navigate={navigate} />}
+      {page === 'wordle'      && <Wordle     navigate={navigate} />}
     </div>
   );
 }

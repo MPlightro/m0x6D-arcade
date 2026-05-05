@@ -4,7 +4,6 @@ import FlappyBird from './pages/FlappyBird';
 import Snake from './pages/Snake';
 import Tetris from './pages/Tetris';
 import Pong from './pages/Pong';
-import Minesweeper from './pages/Minesweeper';
 import './App.css';
 
 function getPage() {
@@ -32,7 +31,6 @@ export default function App() {
       {page === 'snake'       && <Snake      navigate={navigate} />}
       {page === 'tetris'      && <Tetris     navigate={navigate} />}
       {page === 'pong'        && <Pong       navigate={navigate} />}
-      {page === 'minesweeper' && <Minesweeper navigate={navigate} />}
     </div>
   );
 }

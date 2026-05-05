@@ -1,0 +1,48 @@
+.ms-container {
+  text-align: center;
+  color: white;
+  font-family: "Press Start 2P", cursive;
+}
+
+.ms-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 40px);
+  gap: 4px;
+  justify-content: center;
+  margin: 20px auto;
+}
+
+.cell {
+  width: 40px;
+  height: 40px;
+  background: #1a1a1a;
+  border: 2px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.cell:hover {
+  background: #2a2a2a;
+}
+
+.revealed {
+  background: #0f0f0f;
+  border: 2px solid #555;
+}
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #111;
+  border: 2px solid #444;
+  color: white;
+  cursor: pointer;
+  font-family: "Press Start 2P", cursive;
+}
+
+button:hover {
+  background: #222;
+}

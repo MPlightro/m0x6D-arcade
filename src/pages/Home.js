@@ -55,7 +55,7 @@ const GAMES = [
     title: 'Geometry Arrow',
     description: 'Navigate the arrow through geometric mazes.',
     icon: '↗️',
-    status: 'soon',
+    status: 'play',
     accent: '#ffe047',
   },
 ];

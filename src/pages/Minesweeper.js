@@ -140,26 +140,32 @@ export default function Minesweeper({ navigate }) {
   };
 
   return (
-    <div className="minesweeper-page">
-      <div className="ms-topbar">
-        <button className="ms-back" type="button" onClick={() => navigate('home')}>
+    <div className="ms-page">
+      <div className="fb-topbar">
+        <button className="fb-back" type="button" onClick={() => navigate('home')}>
           ← BACK
         </button>
-        <span className="ms-game-label">MINESWEEPER</span>
-        <span className="ms-controls-hint">CLICK / RIGHT CLICK</span>
+        <span className="fb-game-label">MINESWEEPER</span>
+        <span className="fb-controls-hint">CLICK / RIGHT CLICK</span>
       </div>
 
-      <main className="minesweeper">
-        {gameOver && <p className="game-message">Game Over!</p>}
-        {win && <p className="game-message">You Win!</p>}
-        <div className="board">
+      <main className="ms-content">
+        <div className="ms-header">
+          <button className="ms-new-game" type="button" onClick={initializeBoard}>
+            NEW GAME
+          </button>
+          {gameOver && <span className="game-message">GAME OVER</span>}
+          {win && <span className="game-message">YOU WIN</span>}
+        </div>
+
+        <div className="ms-board">
           {board.map((row, r) => (
-            <div className="row" key={r}>
+            <div className="ms-row" key={r}>
               {row.map((cell, c) => (
                 <button
                   key={c}
                   type="button"
-                  className={`cell ${
+                  className={`ms-cell ${
                     cell.isRevealed
                       ? cell.isMine
                         ? 'mine'

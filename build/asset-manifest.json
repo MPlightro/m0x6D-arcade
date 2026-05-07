@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/m0x6D-arcade/static/css/main.a714d24a.css",
-    "main.js": "/m0x6D-arcade/static/js/main.a42b6fad.js",
+    "main.js": "/m0x6D-arcade/static/js/main.1af2141c.js",
     "index.html": "/m0x6D-arcade/index.html",
     "main.a714d24a.css.map": "/m0x6D-arcade/static/css/main.a714d24a.css.map",
-    "main.a42b6fad.js.map": "/m0x6D-arcade/static/js/main.a42b6fad.js.map"
+    "main.1af2141c.js.map": "/m0x6D-arcade/static/js/main.1af2141c.js.map"
   },
   "entrypoints": [
     "static/css/main.a714d24a.css",
-    "static/js/main.a42b6fad.js"
+    "static/js/main.1af2141c.js"
   ]
 }

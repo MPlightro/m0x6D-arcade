@@ -54,6 +54,10 @@ export default function AlchemyShop({ navigate }) {
   const [herbPrice, setHerbPrice] = useState(3);
   const autoRef = useRef(null);
   const gardenRef = useRef(null);
+  const stateRef = useRef(state);
+
+  // Keep ref in sync with latest state so auto-save never reads a stale closure
+  useEffect(() => { stateRef.current = state; }, [state]);
 
   const addLog = useCallback((msg) => {
     setLog(l => [msg, ...l].slice(0, 12));
@@ -61,9 +65,9 @@ export default function AlchemyShop({ navigate }) {
 
   // ── Auto-save ────────────────────────────────────────────────
   useEffect(() => {
-    const id = setInterval(() => writeSave(state), 5000);
+    const id = setInterval(() => writeSave(stateRef.current), 5000);
     return () => clearInterval(id);
-  }, [state]);
+  }, []); // runs once — always reads latest state via ref
 
   // ── Brew progress bar ────────────────────────────────────────
   useEffect(() => {
@@ -158,8 +162,10 @@ export default function AlchemyShop({ navigate }) {
   }, [addLog]);
 
   const resetGame = useCallback(() => {
+    const fresh = initState(null);
     clearSave();
-    setState(initState(null));
+    stateRef.current = fresh; // update ref immediately so any pending interval tick saves fresh state
+    setState(fresh);
     setLog(['Shop reset. Starting fresh!']);
   }, []);
 

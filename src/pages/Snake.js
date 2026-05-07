@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import './Snake.css';
 
+function loadSnakeBest() { try { return parseInt(localStorage.getItem('snake_best') || '0', 10); } catch { return 0; } }
+function saveSnakeBest(b) { try { localStorage.setItem('snake_best', String(b)); } catch {} }
+
 const COLS = 20;
 const ROWS = 20;
 const CELL = 24;
@@ -38,7 +41,7 @@ function initState(best = 0, wallMode = false) {
 
 export default function Snake({ navigate }) {
   const canvasRef = useRef(null);
-  const stateRef  = useRef(initState());
+  const stateRef  = useRef(initState(loadSnakeBest()));
   const rafRef    = useRef(null);
   const wallModeRef = useRef(false);  // survives resets
 
@@ -276,6 +279,7 @@ export default function Snake({ navigate }) {
         if (dead) {
           s.status = 'dead';
           s.best = Math.max(s.best, s.score);
+          saveSnakeBest(s.best);
         } else {
           s.snake = [newHead, ...s.snake];
           if (newHead[0] === s.apple[0] && newHead[1] === s.apple[1]) {

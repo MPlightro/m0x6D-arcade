@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './Wordle.css';
 
+function loadWordleStats() { try { return JSON.parse(localStorage.getItem('wordle_stats') || '{"streak":0,"best":0,"wins":0}'); } catch { return {streak:0,best:0,wins:0}; } }
+function saveWordleStats(s) { try { localStorage.setItem('wordle_stats', JSON.stringify(s)); } catch {} }
+
 // ── Fallback answer pool (used until Datamuse loads / offline) ─
 const FALLBACK_WORDS = [
   'about','above','actor','admit','adult','after','agent','agree','ahead','alarm',
@@ -164,7 +167,8 @@ function initState() {
 // ── Component ─────────────────────────────────────────────────
 export default function Wordle({ navigate }) {
   const [game, setGame]             = useState(initState);
-  const [streak, setStreak]         = useState(0);
+  const [wStats, setWStats]         = useState(loadWordleStats);
+  const streak = wStats.streak;
   const [showAnswer, setShowAnswer] = useState(false);
   const [poolReady, setPoolReady]   = useState(poolLoaded);
   const checkingRef = useRef(false); // prevent double-submit during async
@@ -209,8 +213,20 @@ export default function Wordle({ navigate }) {
           const won        = result.every(r => r === 'correct');
           const lost       = !won && newGuesses.length >= MAX_GUESSES;
 
-          if (won)  setStreak(s => s + 1);
-          if (lost) setStreak(() => 0);
+          if (won) {
+            setWStats(prev2 => {
+              const ns = { streak: prev2.streak + 1, best: Math.max(prev2.best, prev2.streak + 1), wins: prev2.wins + 1 };
+              saveWordleStats(ns);
+              return ns;
+            });
+          }
+          if (lost) {
+            setWStats(prev2 => {
+              const ns = { ...prev2, streak: 0 };
+              saveWordleStats(ns);
+              return ns;
+            });
+          }
 
           return {
             ...prev,

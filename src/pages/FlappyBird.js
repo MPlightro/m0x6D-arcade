@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import './FlappyBird.css';
 
+function loadFlappyBest() { try { return parseInt(localStorage.getItem('flappy_best') || '0', 10); } catch { return 0; } }
+function saveFlappyBest(b) { try { localStorage.setItem('flappy_best', String(b)); } catch {} }
+
 const W = 360;
 const H = 520;
 const GRAVITY = 0.38;
@@ -21,7 +24,7 @@ export default function FlappyBird({ navigate }) {
     bird: { x: 80, y: H / 2 - 20, vy: 0, angle: 0, flap: 0 },
     pipes: [],
     score: 0,
-    best: stateRef.current?.best ?? 0,
+    best: stateRef.current?.best ?? loadFlappyBest(),
     frame: 0,
     lastPipe: 0,
     groundX: 0,
@@ -232,6 +235,7 @@ export default function FlappyBird({ navigate }) {
         if (y + BIRD_R >= H - GROUND_H || y - BIRD_R <= 0) {
           s.status = 'dead';
           s.best = Math.max(s.best, s.score);
+          saveFlappyBest(s.best);
         }
         for (const p of s.pipes) {
           const r = BIRD_R - 3;
@@ -239,6 +243,7 @@ export default function FlappyBird({ navigate }) {
             if (y - r < p.topH || y + r > p.topH + PIPE_GAP) {
               s.status = 'dead';
               s.best = Math.max(s.best, s.score);
+              saveFlappyBest(s.best);
             }
           }
         }

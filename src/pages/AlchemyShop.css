@@ -1,0 +1,191 @@
+.alc-wrap {
+  min-height: 100vh;
+  background: var(--bg);
+  padding: 24px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.alc-header {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.alc-back {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 8px 14px;
+  font-family: var(--pixel);
+  font-size: 9px;
+  transition: color .15s, border-color .15s;
+}
+.alc-back:hover { color: var(--accent); border-color: var(--accent); }
+
+.alc-tag { font-family: var(--pixel); font-size: 10px; color: var(--accent); }
+
+.alc-resources {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+}
+
+.alc-res {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 110px;
+}
+
+.alc-res-icon { font-size: 24px; }
+.alc-res-label { font-family: var(--pixel); font-size: 7px; color: var(--muted); }
+.alc-res-val   { font-family: var(--pixel); font-size: 16px; color: var(--accent); }
+
+.alc-body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  width: 100%;
+  max-width: 900px;
+}
+
+.alc-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.alc-panel-title {
+  font-family: var(--pixel);
+  font-size: 9px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+}
+
+.alc-action-card {
+  background: #0f0f18;
+  border: 1px solid var(--border);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.alc-action-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.alc-action-icon { font-size: 22px; }
+.alc-action-name { font-family: var(--pixel); font-size: 10px; color: var(--text); }
+.alc-action-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+.alc-brew-bar-wrap {
+  height: 5px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.alc-brew-bar {
+  height: 100%;
+  background: var(--accent);
+  transition: width .08s linear;
+  border-radius: 2px;
+}
+
+.alc-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 9px 14px;
+  font-family: var(--pixel);
+  font-size: 9px;
+  cursor: pointer;
+  transition: all .15s;
+  width: 100%;
+}
+.alc-btn:disabled { opacity: .4; cursor: default; }
+.alc-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.alc-btn.primary { border-color: var(--accent); color: var(--accent); }
+.alc-btn.primary:hover:not(:disabled) { background: var(--accent); color: var(--bg); }
+.alc-btn.success { border-color: #47ffa0; color: #47ffa0; }
+.alc-btn.success:hover:not(:disabled) { background: #47ffa0; color: var(--bg); }
+.alc-btn.small { width: auto; padding: 6px 10px; font-size: 8px; }
+
+.alc-upgrade {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  background: #0f0f18;
+  transition: border-color .15s;
+}
+
+.alc-upgrade.owned {
+  opacity: .6;
+  border-color: #2a2a3a;
+}
+
+.alc-upg-icon { font-size: 20px; flex-shrink: 0; }
+.alc-upg-info { flex: 1; min-width: 0; }
+.alc-upg-name { font-family: var(--pixel); font-size: 9px; color: var(--text); }
+.alc-upg-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.alc-upg-owned {
+  font-family: var(--pixel);
+  font-size: 8px;
+  color: #47ffa0;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.alc-empty { color: var(--muted); font-size: 13px; text-align: center; padding: 20px; }
+
+.alc-log {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.alc-log-entry {
+  font-size: 12px;
+  color: var(--muted);
+  padding: 4px 0;
+  border-bottom: 1px solid #1a1a24;
+  transition: color .3s;
+}
+
+.alc-log-entry.fresh { color: var(--text); }
+
+.alc-reset-btn {
+  background: none;
+  border: 1px solid #333;
+  color: #444;
+  padding: 6px;
+  font-family: var(--pixel);
+  font-size: 7px;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: all .15s;
+}
+.alc-reset-btn:hover { border-color: var(--accent2); color: var(--accent2); }

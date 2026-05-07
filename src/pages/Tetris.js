@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import './Tetris.css';
 
+function loadTetrisBest() { try { return parseInt(localStorage.getItem('tetris_best') || '0', 10); } catch { return 0; } }
+function saveTetrisBest(b) { try { localStorage.setItem('tetris_best', String(b)); } catch {} }
+
 // ── Constants ────────────────────────────────────────────────
 const COLS   = 10;
 const ROWS   = 20;
@@ -114,7 +117,7 @@ export default function Tetris({ navigate }) {
   const canvasRef  = useRef(null);
   const previewRef = useRef(null);
   const holdRef    = useRef(null);
-  const stateRef   = useRef(null);
+  const stateRef   = useRef(initState(loadTetrisBest()));
   const rafRef     = useRef(null);
 
   // ── Actions ────────────────────────────────────────────────
@@ -214,6 +217,7 @@ export default function Tetris({ navigate }) {
     if (!fits(s.board, s.shape, s.pos)) {
       s.status = 'dead';
       s.best = Math.max(s.best, s.score);
+      saveTetrisBest(s.best);
     }
   }
 

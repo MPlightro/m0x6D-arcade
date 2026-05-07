@@ -7,6 +7,11 @@ import Pong from './pages/Pong';
 import Minesweeper from './pages/Minesweeper';
 import Wordle from './pages/Wordle';
 import GeometryArrow from './pages/gd-arrow';
+import MemoryMatch from './pages/MemoryMatch';
+import HigherLower from './pages/HigherLower';
+import WhackMole from './pages/WhackMole';
+import Game2048 from './pages/Game2048';
+import AlchemyShop from './pages/AlchemyShop';
 import './App.css';
 
 function getPage() {
@@ -29,14 +34,19 @@ export default function App() {
 
   return (
     <div className="app">
-      {page === 'home'        && <Home       navigate={navigate} />}
-      {page === 'flappy-bird' && <FlappyBird navigate={navigate} />}
-      {page === 'snake'       && <Snake      navigate={navigate} />}
-      {page === 'tetris'      && <Tetris     navigate={navigate} />}
-      {page === 'pong'        && <Pong       navigate={navigate} />}
-      {page === 'minesweeper' && <Minesweeper navigate={navigate} />}
-      {page === 'wordle'      && <Wordle     navigate={navigate} />}
-      {page === 'gd-arrow'    && <GeometryArrow navigate={navigate} />}
+      {page === 'home'          && <Home          navigate={navigate} />}
+      {page === 'flappy-bird'   && <FlappyBird    navigate={navigate} />}
+      {page === 'snake'         && <Snake         navigate={navigate} />}
+      {page === 'tetris'        && <Tetris        navigate={navigate} />}
+      {page === 'pong'          && <Pong          navigate={navigate} />}
+      {page === 'minesweeper'   && <Minesweeper   navigate={navigate} />}
+      {page === 'wordle'        && <Wordle        navigate={navigate} />}
+      {page === 'gd-arrow'      && <GeometryArrow navigate={navigate} />}
+      {page === 'memory-match'  && <MemoryMatch   navigate={navigate} />}
+      {page === 'higher-lower'  && <HigherLower   navigate={navigate} />}
+      {page === 'whack-mole'    && <WhackMole     navigate={navigate} />}
+      {page === 'game-2048'     && <Game2048      navigate={navigate} />}
+      {page === 'alchemy-shop'  && <AlchemyShop   navigate={navigate} />}
     </div>
   );
 }

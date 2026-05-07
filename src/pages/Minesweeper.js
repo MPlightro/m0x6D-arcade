@@ -124,6 +124,9 @@ function chord(board, cols, rows, r, c) {
 // ── Adjacency colours ─────────────────────────────────────────
 const ADJ_COLOR = ['', '#47c8ff', '#47ffa0', '#ff6b47', '#c847ff', '#ff9f47', '#47ffe8', '#f0f0f0', '#888'];
 
+function loadMsWins() { try { return JSON.parse(localStorage.getItem('minesweeper_wins') || '{}'); } catch { return {}; } }
+function saveMsWins(w) { try { localStorage.setItem('minesweeper_wins', JSON.stringify(w)); } catch {} }
+
 // ── Main component ────────────────────────────────────────────
 export default function Minesweeper({ navigate }) {
   const [difficulty, setDifficulty] = useState('easy');
@@ -132,6 +135,7 @@ export default function Minesweeper({ navigate }) {
   const [minesLeft, setMinesLeft]   = useState(10);
   const [time, setTime]             = useState(0);
   const [detonated, setDetonated]   = useState(null); // {r,c} of clicked mine
+  const [wins, setWins]             = useState(loadMsWins);
 
   const timerRef    = useRef(null);
   const startTimeRef = useRef(null);
@@ -193,6 +197,11 @@ export default function Minesweeper({ navigate }) {
       const revealed = floodReveal(next, cols, rows, r, c);
       if (checkWin(revealed, mines)) {
         setStatus('won');
+        setWins(prev => {
+          const next2 = { ...prev, [difficulty]: (prev[difficulty] || 0) + 1 };
+          saveMsWins(next2);
+          return next2;
+        });
         // auto-flag remaining mines
         return revealed.map(row => row.map(cell =>
           cell.mine ? { ...cell, flagged: true } : cell
@@ -231,6 +240,11 @@ export default function Minesweeper({ navigate }) {
       }
       if (checkWin(next, mines)) {
         setStatus('won');
+        setWins(prev => {
+          const nw = { ...prev, [difficulty]: (prev[difficulty] || 0) + 1 };
+          saveMsWins(nw);
+          return nw;
+        });
         return next.map(row => row.map(cell =>
           cell.mine ? { ...cell, flagged: true } : cell
         ));
@@ -310,7 +324,8 @@ export default function Minesweeper({ navigate }) {
           <div className="ms-overlay-box">
             {status === 'won'
               ? <><span className="ms-overlay-title ms-win">YOU WIN</span>
-                  <span className="ms-overlay-sub">cleared in {fmtTime(time)}s</span></>
+                  <span className="ms-overlay-sub">cleared in {fmtTime(time)}s</span>
+                  <span className="ms-overlay-sub">wins ({difficulty}): {wins[difficulty] || 0}</span></>
               : <><span className="ms-overlay-title ms-lose">BOOM</span>
                   <span className="ms-overlay-sub">better luck next time</span></>
             }

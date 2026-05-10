@@ -1,187 +1,324 @@
 .alc-wrap {
   min-height: 100vh;
   background: var(--bg);
-  padding: 24px 16px 40px;
+  padding: 20px 14px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: 14px;
 }
 
+/* ── Header ── */
 .alc-header {
   width: 100%;
-  max-width: 900px;
+  max-width: 960px;
   display: flex;
   align-items: center;
   gap: 16px;
 }
-
 .alc-back {
   background: none;
   border: 1px solid var(--border);
   color: var(--muted);
-  padding: 8px 14px;
+  padding: 7px 13px;
   font-family: var(--pixel);
-  font-size: 9px;
+  font-size: 8px;
   transition: color .15s, border-color .15s;
+  white-space: nowrap;
 }
 .alc-back:hover { color: var(--accent); border-color: var(--accent); }
-
+.alc-title-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .alc-tag { font-family: var(--pixel); font-size: 10px; color: var(--accent); }
+.alc-day { font-family: var(--pixel); font-size: 9px; color: var(--muted); }
+.alc-prestige-badge { font-family: var(--pixel); font-size: 9px; color: #ffd700; border: 1px solid #ffd700; padding: 3px 8px; }
 
+/* ── Resources ── */
 .alc-resources {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
-  max-width: 900px;
+  max-width: 960px;
 }
-
 .alc-res {
   background: var(--surface);
   border: 1px solid var(--border);
-  padding: 12px 18px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 90px;
+}
+.alc-res.prestige-res { border-color: #ffd700; }
+.alc-res-icon { font-size: 20px; }
+.alc-res-label { font-family: var(--pixel); font-size: 6px; color: var(--muted); }
+.alc-res-val   { font-family: var(--pixel); font-size: 14px; color: var(--accent); }
+
+/* ── Customer Banner ── */
+.alc-customer {
+  width: 100%;
+  max-width: 960px;
+  background: #1a1a10;
+  border: 2px solid #ffd700;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  animation: alc-pulse 1.5s ease-in-out infinite;
+}
+@keyframes alc-pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(255,215,0,0); }
+  50%      { box-shadow: 0 0 12px 2px rgba(255,215,0,.3); }
+}
+.alc-cust-icon { font-size: 28px; }
+.alc-cust-info { display: flex; flex-direction: column; gap: 3px; flex: 1; }
+.alc-cust-label { font-family: var(--pixel); font-size: 8px; color: var(--muted); }
+.alc-cust-want  { font-family: var(--pixel); font-size: 11px; color: var(--text); }
+.alc-cust-bonus { font-family: var(--pixel); font-size: 9px; color: #ffd700; }
+.alc-cust-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+.alc-cust-timer-wrap { width: 90px; height: 5px; background: var(--border); position: relative; }
+.alc-cust-timer-bar  { height: 100%; background: #ffd700; transition: width 1s linear; }
+.alc-cust-secs { font-family: var(--pixel); font-size: 8px; color: var(--muted); }
+
+/* ── Active Brews ── */
+.alc-active-brews {
+  width: 100%;
+  max-width: 960px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.alc-brew-active {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 10px 14px;
   display: flex;
   align-items: center;
   gap: 12px;
-  min-width: 110px;
 }
+.alc-brew-active-icon { font-size: 20px; }
+.alc-brew-active-name { font-family: var(--pixel); font-size: 9px; color: var(--text); min-width: 130px; }
+.alc-brew-bar-wrap  { flex: 1; height: 6px; background: var(--border); border-radius: 2px; overflow: hidden; }
+.alc-brew-bar { height: 100%; border-radius: 2px; transition: width .2s linear; }
+.alc-brew-pct { font-family: var(--pixel); font-size: 9px; color: var(--muted); min-width: 36px; text-align: right; }
 
-.alc-res-icon { font-size: 24px; }
-.alc-res-label { font-family: var(--pixel); font-size: 7px; color: var(--muted); }
-.alc-res-val   { font-family: var(--pixel); font-size: 16px; color: var(--accent); }
-
-.alc-body {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 16px;
+/* ── Tabs ── */
+.alc-tabs {
+  display: flex;
+  gap: 6px;
   width: 100%;
-  max-width: 900px;
+  max-width: 960px;
 }
-
-.alc-panel {
+.alc-tab {
   background: var(--surface);
   border: 1px solid var(--border);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.alc-panel-title {
-  font-family: var(--pixel);
-  font-size: 9px;
   color: var(--muted);
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 8px;
+  padding: 10px 18px;
+  font-family: var(--pixel);
+  font-size: 8px;
+  cursor: pointer;
+  transition: all .15s;
+  flex: 1;
+}
+.alc-tab:hover  { color: var(--text); border-color: var(--text); }
+.alc-tab.active { color: var(--bg); background: var(--accent); border-color: var(--accent); }
+
+/* ── Body ── */
+.alc-body {
+  width: 100%;
+  max-width: 960px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.alc-action-card {
-  background: #0f0f18;
+/* ── Brew Grid ── */
+.alc-brew-section { display: flex; flex-direction: column; gap: 12px; }
+.alc-brew-slots-label {
+  font-family: var(--pixel);
+  font-size: 8px;
+  color: var(--muted);
+}
+.alc-batch-tag { color: var(--accent); }
+
+.alc-brew-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+.alc-recipe-card {
+  background: var(--surface);
   border: 1px solid var(--border);
-  padding: 12px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
   gap: 10px;
-}
-
-.alc-action-top {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-
-.alc-action-icon { font-size: 22px; }
-.alc-action-name { font-family: var(--pixel); font-size: 10px; color: var(--text); }
-.alc-action-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
-
-.alc-brew-bar-wrap {
-  height: 5px;
-  background: var(--border);
-  border-radius: 2px;
+  transition: border-color .2s;
+  position: relative;
   overflow: hidden;
 }
-
-.alc-brew-bar {
-  height: 100%;
-  background: var(--accent);
-  transition: width .08s linear;
-  border-radius: 2px;
+.alc-recipe-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--rc, var(--accent));
+  opacity: .6;
 }
+.alc-recipe-card.locked { opacity: .5; }
+.alc-recipe-card.brewing-card { border-color: var(--rc, var(--accent)); }
 
-.alc-btn {
-  background: var(--surface);
+.alc-recipe-header { display: flex; align-items: flex-start; gap: 10px; }
+.alc-recipe-emoji  { font-size: 26px; }
+.alc-recipe-name   { font-family: var(--pixel); font-size: 9px; color: var(--text); line-height: 1.4; }
+.alc-recipe-desc   { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+.alc-recipe-cost {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.alc-mat-tag {
+  background: #1a1a28;
   border: 1px solid var(--border);
+  padding: 3px 7px;
+  font-family: var(--pixel);
+  font-size: 8px;
   color: var(--text);
-  padding: 9px 14px;
+}
+.alc-mat-tag.short { color: var(--accent2); border-color: var(--accent2); }
+.alc-mat-tag.sell-tag { color: #47ffa0; border-color: #47ffa0; margin-left: auto; }
+
+.alc-recipe-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+}
+.alc-recipe-stock { font-family: var(--pixel); font-size: 8px; color: var(--muted); flex: 1; }
+
+.alc-locked-hint { font-family: var(--pixel); font-size: 7px; color: var(--muted); }
+
+.alc-sell-all {
+  background: #1a2a1a;
+  border: 1px solid #47ffa0;
+  color: #47ffa0;
+  padding: 12px;
   font-family: var(--pixel);
   font-size: 9px;
   cursor: pointer;
-  transition: all .15s;
   width: 100%;
+  transition: background .15s;
 }
-.alc-btn:disabled { opacity: .4; cursor: default; }
-.alc-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
-.alc-btn.primary { border-color: var(--accent); color: var(--accent); }
-.alc-btn.primary:hover:not(:disabled) { background: var(--accent); color: var(--bg); }
-.alc-btn.success { border-color: #47ffa0; color: #47ffa0; }
-.alc-btn.success:hover:not(:disabled) { background: #47ffa0; color: var(--bg); }
-.alc-btn.small { width: auto; padding: 6px 10px; font-size: 8px; }
+.alc-sell-all:hover { background: #2a3a2a; }
 
-.alc-upgrade {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px;
-  border: 1px solid var(--border);
-  background: #0f0f18;
-  transition: border-color .15s;
-}
-
-.alc-upgrade.owned {
-  opacity: .6;
-  border-color: #2a2a3a;
-}
-
-.alc-upg-icon { font-size: 20px; flex-shrink: 0; }
-.alc-upg-info { flex: 1; min-width: 0; }
-.alc-upg-name { font-family: var(--pixel); font-size: 9px; color: var(--text); }
-.alc-upg-desc { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
-.alc-upg-owned {
+/* ── Market ── */
+.alc-market { display: flex; flex-direction: column; gap: 10px; }
+.alc-market-note { font-family: var(--pixel); font-size: 7px; color: var(--muted); }
+.alc-market-section-title {
   font-family: var(--pixel);
   font-size: 8px;
-  color: #47ffa0;
-  white-space: nowrap;
-  flex-shrink: 0;
+  color: var(--muted);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 6px;
+  margin-top: 6px;
 }
+.alc-market-row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: border-color .15s;
+}
+.alc-market-row.cust-match { border-color: #ffd700; }
+.alc-market-icon { font-size: 22px; }
+.alc-market-info { flex: 1; }
+.alc-market-name { font-family: var(--pixel); font-size: 9px; color: var(--text); }
+.alc-market-have { color: var(--muted); }
+.alc-market-price { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.alc-market-extra { color: var(--accent); font-size: 11px; }
+.alc-cust-price   { color: #ffd700; }
+.alc-sell-btns    { display: flex; gap: 6px; }
 
-.alc-empty { color: var(--muted); font-size: 13px; text-align: center; padding: 20px; }
+/* ── Upgrades ── */
+.alc-upgrades-wrap { display: flex; flex-direction: column; gap: 12px; }
+.alc-upg-cats { display: flex; gap: 6px; flex-wrap: wrap; }
+.alc-upg-cat-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 8px 14px;
+  font-family: var(--pixel);
+  font-size: 8px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.alc-upg-cat-btn:hover, .alc-upg-cat-btn.active {
+  color: var(--bg);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.alc-upgrades-list { display: flex; flex-direction: column; gap: 8px; }
+.alc-upgrade {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: border-color .15s;
+}
+.alc-upgrade.owned      { opacity: .55; }
+.alc-upgrade.affordable { border-color: var(--accent); }
+.alc-upg-icon  { font-size: 22px; }
+.alc-upg-info  { flex: 1; }
+.alc-upg-name  { font-family: var(--pixel); font-size: 9px; color: var(--text); }
+.alc-upg-desc  { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.alc-upg-owned { font-family: var(--pixel); font-size: 10px; color: #47ffa0; }
 
-.alc-log {
+/* ── Quests ── */
+.alc-quests { display: flex; flex-direction: column; gap: 8px; }
+.alc-quests-progress { font-family: var(--pixel); font-size: 9px; color: var(--muted); }
+.alc-quest {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: opacity .2s;
+}
+.alc-quest.done { opacity: .5; }
+.alc-quest-check { font-size: 18px; }
+.alc-quest-body { flex: 1; }
+.alc-quest-name { font-family: var(--pixel); font-size: 9px; color: var(--text); }
+.alc-quest-desc { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.alc-quest-reward { display: flex; flex-direction: column; gap: 3px; align-items: flex-end; }
+.alc-quest-rew { font-family: var(--pixel); font-size: 8px; color: #47ffa0; }
+
+/* ── Log Panel ── */
+.alc-log-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 14px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  max-height: 200px;
-  overflow-y: auto;
+  gap: 10px;
 }
-
-.alc-log-entry {
-  font-size: 12px;
-  color: var(--muted);
-  padding: 4px 0;
-  border-bottom: 1px solid #1a1a24;
-  transition: color .3s;
-}
-
+.alc-log-title { font-family: var(--pixel); font-size: 8px; color: var(--muted); }
+.alc-log { display: flex; flex-direction: column; gap: 4px; max-height: 180px; overflow-y: auto; }
+.alc-log-entry { font-size: 12px; color: var(--muted); padding: 3px 0; border-bottom: 1px solid #1a1a24; transition: color .4s; }
 .alc-log-entry.fresh { color: var(--text); }
 
 .alc-reset-btn {
   background: none;
-  border: 1px solid #333;
-  color: #444;
-  padding: 6px;
+  border: 1px solid #2a2a2a;
+  color: #3a3a3a;
+  padding: 6px 10px;
   font-family: var(--pixel);
   font-size: 7px;
   cursor: pointer;
@@ -189,3 +326,28 @@
   transition: all .15s;
 }
 .alc-reset-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+
+/* ── Shared Buttons ── */
+.alc-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 13px;
+  font-family: var(--pixel);
+  font-size: 8px;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.alc-btn:disabled { opacity: .35; cursor: default; }
+.alc-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.alc-btn.primary { border-color: var(--accent); color: var(--accent); }
+.alc-btn.primary:hover:not(:disabled) { background: var(--accent); color: var(--bg); }
+.alc-btn.success { border-color: #47ffa0; color: #47ffa0; }
+.alc-btn.success:hover:not(:disabled) { background: #47ffa0; color: var(--bg); }
+.alc-btn.special { border-color: #ffd700; color: #ffd700; }
+.alc-btn.special:hover:not(:disabled) { background: #ffd700; color: var(--bg); }
+.alc-btn.small { padding: 5px 10px; font-size: 7px; }
+.alc-btn.lit   { box-shadow: 0 0 6px rgba(232,255,71,.2); }
+
+.alc-empty { color: var(--muted); font-size: 13px; text-align: center; padding: 24px; }
